@@ -1,0 +1,12 @@
+{
+  "name": "projetof",
+  "displayName": "projetof",
+  "expo": {
+    "name": "projetof",
+    "slug": "projetof",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
