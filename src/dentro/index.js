@@ -1,11 +1,37 @@
 import { StatusBar } from 'expo-status-bar'
-import React from 'react'
+import React, { useState } from 'react'
 import { Ionicons } from '@expo/vector-icons'
-import { Text, StyleSheet, SafeAreaView, Keyboard, TextInput, Animated, TouchableOpacity, View} from 'react-native'
+import { Text, StyleSheet, SafeAreaView, Keyboard, TextInput, Animated, TouchableOpacity, View, AsyncStorage, Alert} from 'react-native'
 
 export default function Dentro() {
-    return (
+    const [peixe, setPeixe] = useState('')
+    const [tamanho, setTamanho] = useState('')
+    const [peso, setPeso] = useState('')
 
+    async function salvar() {
+       const dados = {
+        peixe, tamanho, peso
+       }
+       
+        await AsyncStorage.setItem("dados", JSON.stringify(dados))
+    }
+
+    async function mostrarDados() {
+        const json = await AsyncStorage.getItem("dados")
+        const dados = JSON.parse(json)
+    
+    Alert.alert('Especificações do peixe',
+        `Nome: ${peixe} - Tamanho ${tamanho} - Peso ${peso}`
+    
+    )}
+   
+   
+   
+   
+    return (
+        
+
+        
         <SafeAreaView style={styles.container} >
             
             <View style={styles.content}> 
@@ -17,7 +43,8 @@ export default function Dentro() {
                 <TextInput 
                     style={styles.input}
                     placeholder= 'Peixe'
-                    onChangeText={()=> {}}
+                    value={peixe}
+                    onChangeText={text => setPeixe(text)}
             />
 
                 
@@ -25,7 +52,8 @@ export default function Dentro() {
                     style={styles.input}
                     placeholder='Tamanho'
                     keyboardType='number-pad'
-                    onChangeText={()=> {}}
+                    value={tamanho}
+                    onChangeText={ text => setTamanho(text)}
                 />
 
 
@@ -33,12 +61,19 @@ export default function Dentro() {
                     style={styles.input}
                     placeholder= 'Peso'
                     keyboardType='number-pad'
-                    onChangeText={()=> {}}
+                    value={peso}
+                    onChangeText={text => setPeso(text)}
                 />
 
-                <TouchableOpacity style={styles.btnSend} >
+                <TouchableOpacity style={styles.btnSend} onPress={salvar} >
                     <Text style={styles.send} >
                         Enviar
+                    </Text>           
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.btnSend} onPress={mostrarDados} >
+                    <Text style={styles.send} >
+                        Mostrar informações
                     </Text>           
                 </TouchableOpacity>
 
@@ -53,7 +88,7 @@ export default function Dentro() {
 
             </TouchableOpacity>
 
-        </SafeAreaView>
+    </SafeAreaView>
 
 
     )
