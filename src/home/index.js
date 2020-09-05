@@ -147,7 +147,7 @@ import { StyleSheet,
       width: 90,
   },
     input: {
-      color: '#fff',
+      color: '#191919',
       backgroundColor: '#F8F8FF',
       alignItems: "center",
       width: '300%', 

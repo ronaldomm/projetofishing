@@ -8,6 +8,7 @@ export default function Dentro() {
     const [tamanho, setTamanho] = useState('')
     const [peso, setPeso] = useState('')
     const [listaDados, setListaDados] = useState([])
+    const [mostrar, setMostrar] = useState('')
 
     useEffect(() => {
         (async () => {
@@ -23,9 +24,21 @@ export default function Dentro() {
 
     async function salvar() {
        const dados = {
-        peixe, tamanho, peso
+        peixe, tamanho, peso 
        }
+
+       let pesoTotal = await AsyncStorage.getItem("peso")
        
+       if (pesoTotal) {
+           pesoTotal = Number(pesoTotal) + Number(peso) 
+
+       } else {
+           pesoTotal = peso 
+       }
+
+       await AsyncStorage.setItem("peso", String(pesoTotal))
+
+
        let listaDadosStorage = await AsyncStorage.getItem("listaDados")
 
        if (listaDadosStorage) { // Se for verdadeiro, é pq existe um array
@@ -41,10 +54,22 @@ export default function Dentro() {
         //    { peixe: "Tal", tamanho: 513, peso: 241 }
         // ]
        }
-        
+
        await AsyncStorage.setItem("listaDados", JSON.stringify(listaDadosStorage))
        setListaDados(listaDadosStorage)
+      
     }
+    async function mostrarDados() {
+        const mostrar = await AsyncStorage.getItem("peso") 
+        
+
+        Alert.alert(
+        "Quantidade dos Bitelos em Kg", 
+        `O peso total dos peixes já capturados é: ${mostrar}`
+        )
+    }
+
+
    
     return (
         
@@ -94,7 +119,7 @@ export default function Dentro() {
                     </Text>           
                 </TouchableOpacity>
 
-                {listaDados.map((dado, index) => 
+                {/* {listaDados.map((dado, index) => 
                     <View key={index}>
                         <Text>
                             Nome peixe: {dado.peixe}
@@ -106,10 +131,17 @@ export default function Dentro() {
                             Peso peixe: {dado.peso}
                         </Text>
                     </View>
-                )} 
+                )}  */}
+                
 
             </View>
+                
+                <View>
+                    
 
+                </View>
+
+            
 
             <TouchableOpacity style={styles.fab}>
                 <Ionicons name="ios-add" size={35} color='#FFF' />
@@ -140,7 +172,8 @@ const styles = StyleSheet.create ( {
     container:{
         backgroundColor: '#87CEEB',
         alignItems: 'center',
-        flex: 1
+        flex: 1,
+         
         
     },
     title: {
@@ -186,7 +219,8 @@ const styles = StyleSheet.create ( {
         alignItems: 'center',
         borderRadius: 7,
         height: 70,
-        width: '50%'
+        width: '50%',
+        marginBottom: 20
 
     },
     send: {
